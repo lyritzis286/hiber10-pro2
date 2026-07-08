@@ -7,10 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @NoArgsConstructor
 @Entity
@@ -54,9 +51,39 @@ public class Teacher {
     @JoinColumn(name = "teacher_more_info_id")
     private TeacherMoreInfo teacherMoreInfo;
 
+    public Teacher(String firstname, String lastname, Boolean active) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.active = active;
+    }
+
     public Set<Course> getAllCourses() {
         return Collections.unmodifiableSet(courses);
     }
 
+    public void addCourse(Course course) {
+        courses.add(course);
+        course.getTeachers().add(this);
+    }
 
+    public void removeCourse(Course course) {
+        courses.remove(course);
+        course.getTeachers().remove(this);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%d %s %s", id, firstname, lastname);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Teacher teacher)) return false;
+        return Objects.equals(getUuid(), teacher.getUuid());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getUuid());
+    }
 }

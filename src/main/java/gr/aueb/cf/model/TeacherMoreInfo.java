@@ -25,4 +25,15 @@ public class TeacherMoreInfo {
 
     @Enumerated(EnumType.STRING)
     private GenderType gender;
+
+
+    public TeacherMoreInfo(LocalDate dateOfBirth, GenderType gender) {
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%d %s %s", id, dateOfBirth, gender);
+    }
 }

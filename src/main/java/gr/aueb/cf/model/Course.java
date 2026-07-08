@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -38,6 +39,14 @@ public class Course {
     @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY)
     private Set<Teacher> teachers = new HashSet<>();
 
+    public Course(String title, String comments, LessonType lessonType) {
+        this.title = title;
+        this.comments = comments;
+        this.lessonType = lessonType;
+    }
+
+
+
     public Set<Teacher> getAllTeachers() {
         return Collections.unmodifiableSet(teachers);
     }
@@ -52,6 +61,19 @@ public class Course {
         teacher.getCourses().remove(this);
     }
 
+    @Override
+    public String toString() {
+        return String.format("%d %s", id, title);
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Course course)) return false;
+        return Objects.equals(getTitle(), course.getTitle());
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getTitle());
+    }
 }
